@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_16_203539) do
+ActiveRecord::Schema.define(version: 2019_08_17_122424) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "drivers_licenses", force: :cascade do |t|
+    t.bigint "person_id"
+    t.string "state"
+    t.string "drivers_license_number", null: false
+    t.date "expires_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["person_id"], name: "index_drivers_licenses_on_person_id"
+  end
 
   create_table "people", force: :cascade do |t|
     t.string "name"
@@ -29,6 +39,10 @@ ActiveRecord::Schema.define(version: 2019_08_16_203539) do
     t.date "adopted_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "person_id"
+    t.index ["person_id"], name: "index_pets_on_person_id"
   end
 
+  add_foreign_key "drivers_licenses", "people"
+  add_foreign_key "pets", "people"
 end
